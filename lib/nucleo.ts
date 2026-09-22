@@ -26,7 +26,7 @@ export const nucleo = criarNucleo({
     },
     'gestao-acesso': {
       origem: process.env.ACESSO_URL ?? 'http://127.0.0.1:4010',
-      caminhos: ['/v1/modulos-permitidos'], metodos: ['GET'], credencial: 'usuario', timeoutMs: 1000,
+      caminhos: ['/v1/modulos-permitidos', '/v2/eu'], metodos: ['GET'], credencial: 'usuario', timeoutMs: 1000,
     },
   },
 })
