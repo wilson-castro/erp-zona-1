@@ -1,6 +1,7 @@
 import 'server-only'
 import { cookies, headers } from 'next/headers'
-import { acessoHttp, criarNucleo, sessaoArquivo } from '@erp/nucleo'
+import { acessoHttp, criarNucleo, sessaoArquivo, sessaoRedis } from '@erp/nucleo'
+import { clienteRedis } from './redis'
 
 /**
  * Raiz de composição da zona 1. Sessão só em LEITURA: quem grava é o shell (N3).
@@ -8,7 +9,8 @@ import { acessoHttp, criarNucleo, sessaoArquivo } from '@erp/nucleo'
  */
 export const nucleo = criarNucleo({
   app: 'zona1',
-  sessao: sessaoArquivo({ dir: process.env.SESSAO_DIR ?? '/tmp/erp-sessoes' }),
+  // REDIS_URL definido: Redis (showcase, produção); senão, arquivo de desenvolvimento
+  sessao: clienteRedis ? sessaoRedis({ cliente: clienteRedis }) : sessaoArquivo({ dir: process.env.SESSAO_DIR ?? '/tmp/erp-sessoes' }),
   lerCookieDeSessao: async () => (await cookies()).get('__Host-session')?.value,
   // núcleo 8: o proxy pôs um traceparent na requisição; cada chamada ao domínio leva um filho
   lerTraceparent: async () => (await headers()).get('traceparent') ?? undefined,
