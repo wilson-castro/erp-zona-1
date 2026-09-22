@@ -24,9 +24,10 @@ export const nucleo = criarNucleo({
       origem: process.env.DOMINIO_B_URL ?? 'http://127.0.0.1:4002',
       caminhos: ['/v1/indicadores'], metodos: ['GET'], credencial: 'usuario', timeoutMs: 2000,
     },
+    // gestão de acesso v2 (ADR-0014, adendo 1): só o acesso efetivo de quem está logado
     'gestao-acesso': {
-      origem: process.env.ACESSO_URL ?? 'http://127.0.0.1:4010',
-      caminhos: ['/v1/modulos-permitidos', '/v2/eu'], metodos: ['GET'], credencial: 'usuario', timeoutMs: 1000,
+      origem: process.env.ACESSO_URL ?? 'http://127.0.0.1:4020',
+      caminhos: ['/v2/eu'], metodos: ['GET'], credencial: 'usuario', timeoutMs: 1000,
     },
   },
 })

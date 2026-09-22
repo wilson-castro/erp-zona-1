@@ -2,7 +2,7 @@ import { exigirModulo } from '@/lib/pagina'
 import { lerRecurso } from '@/lib/dominio-a'
 
 export default async function PaginaDoRecurso({ params }: { params: Promise<{ id: string }> }) {
-  await exigirModulo('zona1.painel')
+  await exigirModulo('zona1', 'painel.ver')
   const { id } = await params
   const recurso = await lerRecurso(id)
   return (

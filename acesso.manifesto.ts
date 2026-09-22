@@ -1,12 +1,11 @@
-import { definirManifesto } from '@erp/contratos'
+import { definirManifestoDeModulo } from '@erp/contratos'
 
-/** Catálogo da zona 1: módulos, perfis próprios e o que cada perfil concede por padrão (N6). */
-export default definirManifesto({
-  zona: 'zona1',
-  modulos: [
-    { id: 'zona1.painel', rotulo: 'Painel da zona 1', prefixo: '/zona1', restritoPorPadrao: false },
-    { id: 'zona1.relatorios', rotulo: 'Relatórios', prefixo: '/zona1/relatorios', restritoPorPadrao: true },
-  ],
-  perfis: [{ id: 'zona1.analista', rotulo: 'Analista da zona 1' }],
-  concessoes: { 'zona1.analista': ['zona1.relatorios'] },
+/**
+ * O módulo da zona 1 e o catálogo de funcionalidades que o código dela usa (ADR-0014, adendo 1).
+ * Perfis e concessões moram na gestão de acesso, não aqui (invariante 17).
+ */
+export default definirManifestoDeModulo({
+  id: 'zona1',
+  nome: 'Zona 1 — painel e relatórios',
+  funcionalidades: ['painel.ver', 'relatorios.ver'],
 })
