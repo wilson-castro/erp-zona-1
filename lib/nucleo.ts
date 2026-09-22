@@ -1,5 +1,5 @@
 import 'server-only'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { acessoHttp, criarNucleo, sessaoArquivo } from '@erp/nucleo'
 
 /**
@@ -10,6 +10,8 @@ export const nucleo = criarNucleo({
   app: 'zona1',
   sessao: sessaoArquivo({ dir: process.env.SESSAO_DIR ?? '/tmp/erp-sessoes' }),
   lerCookieDeSessao: async () => (await cookies()).get('__Host-session')?.value,
+  // núcleo 8: o proxy pôs um traceparent na requisição; cada chamada ao domínio leva um filho
+  lerTraceparent: async () => (await headers()).get('traceparent') ?? undefined,
   acesso: acessoHttp({ destino: 'gestao-acesso' }),
   destinos: {
     'dominio-a': {
