@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p 3001",
     "typecheck": "tsc --noEmit",
-    "registrar": "node scripts/registrar-manifesto.ts"
+    "registrar": "node scripts/registrar-manifesto.ts",
+    "registrar-rota": "node scripts/registrar-rota.ts"
   },
   "dependencies": {
     "@erp/contratos": "0.4.0",
