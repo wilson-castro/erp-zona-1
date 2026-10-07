@@ -1,6 +1,7 @@
 import { nucleo } from '@/lib/nucleo'
 import { acessoEfetivo, exigirModulo } from '@/lib/pagina'
 import { listarRecursos } from '@/lib/dominio-a'
+import { fragmentos } from '@/lib/fragmentos'
 import { BotaoDeAviso } from './BotaoDeAviso'
 
 type Indicador = { nome: string; valor: number }
@@ -9,10 +10,11 @@ export default async function Painel() {
   await exigirModulo('zona1', 'painel.ver')
   // Relatórios só aparecem para quem tem a funcionalidade: ausência de permissão é ausência de elemento (invariante 8)
   const relatorios = (await acessoEfetivo()).modulos.find((m) => m.id === 'zona1')?.funcionalidades.includes('relatorios.ver')
-  // Cada bloco depende de um domínio. Um domínio fora apaga o bloco dele, não a página.
-  const [recursos, indicadores] = await Promise.all([
+  // Cada bloco depende de um domínio ou de outra zona. Um deles fora apaga o bloco dele, não a página.
+  const [recursos, indicadores, tarefas] = await Promise.all([
     listarRecursos().catch(() => null),
     nucleo.destino('dominio-b').get<Indicador[]>('/v1/indicadores').then((r) => r.body ?? [], () => null),
+    fragmentos.buscar('zona2', 'tarefas', 'pendentes'),
   ])
   return (
     <>
@@ -30,6 +32,8 @@ export default async function Painel() {
           ? <ul>{recursos.map((r) => <li key={r.id}><a href={`/zona1/recursos/${r.id}`}>{r.nome}</a></li>)}</ul>
           : <p>Recursos indisponíveis no momento.</p>}
       </section>
+      {/* Bloco da zona 2 (ADR-0011): HTML inerte, conferido pelo núcleo. Sem o módulo dela, não existe (invariante 8). */}
+      {tarefas && <div dangerouslySetInnerHTML={{ __html: tarefas }} />}
       {recursos && <BotaoDeAviso texto={`${recursos.length} recursos visíveis para você`} />}
     </>
   )
