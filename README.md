@@ -6,7 +6,7 @@
 |---|---|
 | Porta | `3001` (acessada pelo navegador **só via shell**, `http://localhost:3000`) |
 | Rotas | `/zona1` (livre), `/zona1/relatorios` (restrito), `/zona1/recursos/[id]` |
-| Chama | `dominio-a` (`:4001`), `dominio-b` (`:4002`), `gestao-acesso` (`:4010`) — declarados em `lib/nucleo.ts` (registro de destinos) |
+| Chama | `dominio-a` (`:4001`), `dominio-b` (`:4002`), `gestao-acesso` (`:4020`) - declarados em `lib/nucleo.ts` (registro de destinos) |
 | Depende de | `@erp/nucleo`, `@erp/moldura`, `@erp/contratos` (Verdaccio local `:4873`) |
 
 ## Responsabilidades
